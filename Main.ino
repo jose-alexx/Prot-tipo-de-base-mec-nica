@@ -4,21 +4,20 @@
 #include <Wire.h>
 #include <Stepper.h>
 
-// Passos por rotação do motor 28BYJ-48
-const int passosPorRotacao = 2048;
+// Número de passos por rotação do motor 28BYJ-48
+const int passosPorRevolucao = 2048;
 
 // Pinos do motor conectados ao ULN2003
-const int motorStepperPin01 = 2;
-const int motorStepperPin02 = 4;
-const int motorStepperPin03 = 18;
-const int motorStepperPin04 = 19;
+const int motorPin1 = 2;
+const int motorPin2 = 4;
+const int motorPin3 = 18;
+const int motorPin4 = 19;
 
-Stepper motor(passosPorRotacao, motorStepperPin01, motorStepperPin02, motorStepperPin03, motorStepperPin04);
+Stepper motor(passosPorRevolucao, motorPin1, motorPin3, motorPin2, motorPin4);
 
 Adafruit_MPU6050 mpu;
 
 void setup(void) {
-
   Serial.begin(115200);
   
   // Inicializa o MPU6050
@@ -34,8 +33,7 @@ void setup(void) {
   mpu.setGyroRange(MPU6050_RANGE_500_DEG);
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 
-  // Velocidade do motor (ajuste conforme necessário)
-  motor.setSpeed(10);  // Velocidade em RPM
+  motor.setSpeed(5);  // Velocidade em RPM
 
   delay(100);
 }
@@ -51,11 +49,11 @@ void loop() {
   Serial.print(anguloZ);
   Serial.println("°");
 
-  if (abs(anguloZ) > 2) { 
+  if (abs(anguloZ) > 2) {
     motor.step(10);
   } else {
     Serial.println("Posição no eixo (Z) próxima de 0°. Motor parado.");
-    motor.step(0); 
+    motor.step(0);
   }
 
   delay(100);
